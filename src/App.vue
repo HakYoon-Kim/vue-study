@@ -10,7 +10,7 @@
 
     v-bind :
   -->
-  <Modal :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
+  <Modal @closeModal="모달창열렸니=false" :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
 
   <div class="menu">
     <!-- <a v-for="(a,i) in 메뉴들" :key="i">{{ a }}</a> -->
@@ -43,7 +43,7 @@
     <p>50 만원</p>
   </div> -->
 
-  <Card :원룸들="원룸들"/>
+  <Card @openModal="모달창열렸니 = true; 누른거 = $event" :원룸="원룸들[i]" v-for="(one,i) in 원룸들" :key="one"/>
      
 </template>
 
@@ -68,7 +68,8 @@ export default {
       메뉴들 : ['Home', 'Shop', 'About'],
       //products : ['역삼동원룸', '천호동원룸', '마포구원룸'],
       원룸들 : data,
-      누른거 : 0
+      누른거 : 0,
+      오브젝트 : { name : 'kim', age : 20 }
     }
   },
   methods : {
