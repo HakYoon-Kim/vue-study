@@ -1,17 +1,38 @@
 <template>
 
-  <div class="black-bg" v-if="모달창열렸니 == true">
-    <div class="white-bg">
-      <h4>상세페이지임</h4>
-      <p>상세페이지 내용임</p>
-      <button @click="모달창열렸니 = false">닫기</button>
-    </div>
-  </div>
+  <!-- 
+    자식컴포넌트가 부모가 갖고 있는 데이터 쓰려면
+    props로 데이터를 전송해야함
+
+    1.데이터보내고
+    2.등록하고
+    3.쓰셈
+
+    v-bind :
+  -->
+  <Modal :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
 
   <div class="menu">
     <!-- <a v-for="(a,i) in 메뉴들" :key="i">{{ a }}</a> -->
     <a v-for="a in 메뉴들" :key="a">{{ a }}</a>
   </div>
+
+  <Discount/>
+
+  <!-- 
+    축약해둔 컴포넌트 쓰는 법
+    1.vue파일 import해오고
+    2.등록하고
+    3.쓰셈
+
+    왜 컴포넌트 사용?
+    1. 아름다워
+    2. 재사용쉬움
+
+    초보 특)
+    온갖거 다 컴포넌트로 만들어둠
+    반복적으로 출현할 부분만 컴포넌트화 권장
+  -->
 
   <!-- 
    = 반복문 = 
@@ -22,17 +43,16 @@
     <p>50 만원</p>
   </div> -->
 
-  <div v-for="(oneroom,i) in 원룸들" :key="i">
-    <img :src="원룸들[i].image" class="room-img">
-    <h4 @click="모달창열렸니 = true">{{ 원룸들[i].title }}</h4>
-    <p>{{ 원룸들[i].price }}원</p>
-  </div>
+  <Card :원룸들="원룸들"/>
      
 </template>
 
 <script>
 
 import data from './assets/oneroom';
+import Discount from './components/Discount.vue';
+import Modal from './components/Modal.vue';
+import Card from './components/Card.vue';
 
 export default {
   name: 'App',
@@ -47,7 +67,8 @@ export default {
       신고수 : [0, 0, 0],
       메뉴들 : ['Home', 'Shop', 'About'],
       //products : ['역삼동원룸', '천호동원룸', '마포구원룸'],
-      원룸들 : data
+      원룸들 : data,
+      누른거 : 0
     }
   },
   methods : {
@@ -58,7 +79,9 @@ export default {
     }
   },
   components: {
-    
+    Discount : Discount,
+    Modal : Modal,
+    Card : Card
   }
 }
 
@@ -71,6 +94,14 @@ body  {
 div {
   box-sizing: border-box;
 }
+
+.discount {
+  background: #eee;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
 .black-bg {
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.5);
