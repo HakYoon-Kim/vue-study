@@ -21,11 +21,23 @@
 <script>
 export default {
     name : 'Modal',
-    data(){
+    data(){  
       return {
         // 문자 입력받을거면 초기값을 문자로 하셈
         month : 1,
       }
+    },
+    watch : {
+      // 데이터 감시하려면 watch:{감시할데이터(){}}
+      month(a){
+        if(a >= 13){
+          alert('13이상 입력하지 마셈');
+          this.month = 1;
+        }
+        if(isNaN(a)){
+          alert('문자 입력하지 마셈');
+        }
+      },
     },
     props : {
         // props:{데이터이름:자료형이름}

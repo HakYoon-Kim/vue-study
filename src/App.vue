@@ -10,7 +10,14 @@
 
     v-bind :
   -->
-  <Modal @closeModal="모달창열렸니=false" :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
+  <!-- <div class="start" :class="{ end : 모달창열렸니 }"> -->
+  <!-- 위에꺼랑 똑같은건데, 좀 편하게 할 수 있는방법 from to -->
+  <transition name="fade">
+    <Modal @closeModal="모달창열렸니=false" 
+    :원룸들="원룸들" :누른거="누른거" 
+    :모달창열렸니="모달창열렸니" />
+  </transition>  
+  <!-- </div> -->
 
   <div class="menu">
     <!-- <a v-for="(a,i) in 메뉴들" :key="i">{{ a }}</a> -->
@@ -18,6 +25,9 @@
   </div>
 
   <Discount/>
+
+  <button @click="priceSort">가격순정렬</button>
+  <button @click="sortBack">되돌리기</button>
 
   <!-- 
     축약해둔 컴포넌트 쓰는 법
@@ -59,6 +69,9 @@ export default {
   // 데이터 보관함(object자료로 저장해야함)
   data(){
     return {
+      // array/object데이터의 각각 별개의 사본을 만들려면
+      // [...array자료] 이거도 암기!
+      원룸들오리지널 : [...data],
       // 동적인 UI만드는 법
       // 0.디자인해두고
       // 1.UI의 현재 상태를 데이터로 기록
@@ -77,6 +90,24 @@ export default {
     // 함수안에서 데이터 쓸 땐 this.데이터명 걍 암기!!
     increase(){
       this.신고수++;
+    },
+    priceSort(){
+      // var array = [3,5,2].sort()
+      // 이거는 문자 정렬임
+      // 숫자 정렬은 어떻게 하냐면
+      // array.sort(function(a,b){return a - b});
+      // 그냥 암기하는게 좋음
+      // (참고)sort()하면 원본이 변형됨(요즘 코딩 관습과 약간 맞지 않음)
+      // map() filter() 등은 원본을 보존해줌
+
+      // 해볼것
+      // 가격낮은순정렬, 가격높은순정렬, 상품명 가나다순 정렬
+      this.원룸들.sort(function(a,b){
+        return a.price - b.price
+      })
+    },
+    sortBack(){
+      this.원룸들 = this.원룸들오리지널;
     }
   },
   components: {
@@ -89,6 +120,36 @@ export default {
 </script>
 
 <style>
+.fade-leave-from { 
+  opacity: 1;
+}
+.fade-leave-active { 
+  transition: all 1s;
+}
+.fade-leave-to { 
+  opacity: 0;
+} 
+
+.fade-enter-from { 
+  /* opacity: 0; */
+  transform: translateY(-1000px);
+}
+.fade-enter-active { 
+  transition: all 1s;
+}
+.fade-enter-to { 
+  /* opacity: 1; */
+  transform: translateY(0px);
+} 
+
+.start {
+  opacity: 0;
+  transition: all 1s;
+}
+.end {
+  opacity: 1;
+}
+
 body  {
   margin: 0;
 }
